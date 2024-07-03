@@ -16,7 +16,7 @@ pub fn plugin(app: &mut App) {
 pub struct FpsWidget;
 
 #[derive(Component, Default)]
-struct FpsText;
+pub struct FpsText;
 
 pub trait UiFPSWidgetExt<'a> {
     fn fps(&'a mut self) -> UiBuilder<'a, Entity>;
@@ -43,7 +43,7 @@ impl<'a> UiFPSWidgetExt<'a> for UiBuilder<'a, UiRoot> {
     }
 }
 
-fn update_fps(
+pub fn update_fps(
     mut commands: Commands,
     diagnostics: Res<DiagnosticsStore>,
     label: Query<Entity, With<FpsText>>,
