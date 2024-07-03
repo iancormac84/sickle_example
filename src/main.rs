@@ -1,10 +1,9 @@
-pub mod banner_widget;
-pub mod fps_widget;
-
-use banner_widget::{BannerWidget, BannerWidgetCommands, BannerWidgetConfig, UiBannerWidgetExt};
 use bevy::prelude::*;
 //use bevy_inspector_egui::quick::WorldInspectorPlugin;
-use fps_widget::{FpsWidget, UiFPSWidgetExt};
+use sickle_example::{
+    banner_widget::{BannerWidget, BannerWidgetCommands, BannerWidgetConfig, UiBannerWidgetExt},
+    fps_widget::{self, FpsWidget, UiFPSWidgetExt}
+};
 use sickle_ui::{prelude::*, ui_commands::SetTextExt};
 
 fn main() {
