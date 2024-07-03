@@ -2,18 +2,7 @@ use bevy::{
     ecs::system::{EntityCommand, EntityCommands},
     prelude::*,
 };
-use sickle_ui::{
-    ui_builder::{UiBuilder, UiRoot},
-    ui_commands::SetTextExt,
-    ui_style::{
-        SetImageExt, SetNodeAlignSelfExt, SetNodeHeightExt, SetNodeJustifyContentsExt,
-        SetNodePositionTypeExt, SetNodeTopExt, SetNodeWidthExt,
-    },
-    widgets::{
-        container::UiContainerExt,
-        label::{LabelConfig, UiLabelExt},
-    },
-};
+use sickle_ui::{prelude::*, ui_commands::SetTextExt};
 
 #[derive(Component)]
 pub struct BannerWidget;
@@ -38,16 +27,16 @@ impl BannerWidgetConfig {
     }
 }
 
-pub trait UiBannerWidgetExt<'w, 's> {
-    fn banner_widget<'a>(&'a mut self, config: BannerWidgetConfig)
-        -> UiBuilder<'w, 's, 'a, Entity>;
+pub trait UiBannerWidgetExt<'a> {
+    fn banner_widget(&'a mut self, config: BannerWidgetConfig)
+        -> UiBuilder<'a, Entity>;
 }
 
-impl<'w, 's> UiBannerWidgetExt<'w, 's> for UiBuilder<'w, 's, '_, UiRoot> {
-    fn banner_widget<'a>(
+impl<'a> UiBannerWidgetExt<'a> for UiBuilder<'a, UiRoot> {
+    fn banner_widget(
         &'a mut self,
         config: BannerWidgetConfig,
-    ) -> UiBuilder<'w, 's, 'a, Entity> {
+    ) -> UiBuilder<'a, Entity> {
         self.container((ImageBundle::default(), BannerWidget), |banner| {
             banner
                 .style()
@@ -57,7 +46,7 @@ impl<'w, 's> UiBannerWidgetExt<'w, 's> for UiBuilder<'w, 's, '_, UiRoot> {
                 .width(Val::Px(401.0))
                 .height(Val::Px(79.0))
                 // Add a nice looking background image to our widget.
-                .image("banner_title.png");
+                .image("banner_title.png".into());
 
             // And we'll want a customizable label on the banner.
             let mut label = banner.label(LabelConfig::default());
@@ -77,7 +66,7 @@ impl<'w, 's> UiBannerWidgetExt<'w, 's> for UiBuilder<'w, 's, '_, UiRoot> {
                 .font(
                     config.font,
                     config.font_size,
-                    Color::rgb(0.471, 0.278, 0.153),
+                    Color::srgb(0.471, 0.278, 0.153),
                 );
         })
     }

@@ -3,27 +3,16 @@ pub mod fps_widget;
 
 use banner_widget::{BannerWidget, BannerWidgetCommands, BannerWidgetConfig, UiBannerWidgetExt};
 use bevy::prelude::*;
-use bevy_inspector_egui::quick::WorldInspectorPlugin;
+//use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use fps_widget::{FpsWidget, UiFPSWidgetExt};
-use sickle_ui::{
-    ui_builder::{UiBuilderExt, UiRoot},
-    ui_commands::SetTextExt,
-    ui_style::{
-        SetBackgroundColorExt, SetNodeHeightExt, SetNodePositionTypeExt, SetNodeRightExt,
-        SetNodeTopExt,
-    },
-    widgets::{
-        column::UiColumnExt,
-        label::{LabelConfig, UiLabelExt},
-    },
-};
+use sickle_ui::{prelude::*, ui_commands::SetTextExt};
 
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         // Add the WorldInspectorPlugin or a custom inspector plugin to your app
         // so that you can tweak the layout of widgets at runtime.
-        .add_plugins(WorldInspectorPlugin::new())
+        //.add_plugins(WorldInspectorPlugin::new())
         .add_plugins(fps_widget::plugin)
         .add_systems(Startup, spawn_camera)
         .add_systems(
@@ -62,7 +51,7 @@ fn spawn_simple_widget(mut commands: Commands) {
             // By default, a column will be 100% of the parent's height which would be the entire length of the screen.,
             .height(Val::Auto)
             // Lets give it a visible background color.
-            .background_color(Color::rgb(0.5, 0.5, 0.5));
+            .background_color(Color::srgb(0.5, 0.5, 0.5));
 
         // Let's add some content to our column.
         column

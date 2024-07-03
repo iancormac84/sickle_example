@@ -1,19 +1,10 @@
 use bevy::{
+    color::palettes,
     diagnostic::{DiagnosticsStore, FrameTimeDiagnosticsPlugin},
     prelude::*,
 };
-use sickle_ui::{
-    ui_builder::{UiBuilder, UiRoot},
-    ui_commands::SetTextExt,
-    ui_style::{
-        SetBackgroundColorExt, SetNodeBottomExt, SetNodeJustifyContentsExt, SetNodePositionTypeExt,
-        SetNodeRightExt,
-    },
-    widgets::{
-        container::UiContainerExt,
-        label::{LabelConfig, UiLabelExt},
-    },
-};
+
+use sickle_ui::{prelude::*, ui_commands::SetTextExt};
 
 pub(super) fn plugin(app: &mut App) {
     app //
@@ -27,12 +18,12 @@ pub struct FpsWidget;
 #[derive(Component, Default)]
 struct FpsText;
 
-pub trait UiFPSWidgetExt<'w, 's> {
-    fn fps<'a>(&'a mut self) -> UiBuilder<'w, 's, 'a, Entity>;
+pub trait UiFPSWidgetExt<'a> {
+    fn fps(&'a mut self) -> UiBuilder<'a, Entity>;
 }
 
-impl<'w, 's> UiFPSWidgetExt<'w, 's> for UiBuilder<'w, 's, '_, UiRoot> {
-    fn fps<'a>(&'a mut self) -> UiBuilder<'w, 's, 'a, Entity> {
+impl<'a> UiFPSWidgetExt<'a> for UiBuilder<'a, UiRoot> {
+    fn fps(&'a mut self) -> UiBuilder<'a, Entity> {
         self.container((NodeBundle::default(), FpsWidget), |fps| {
             fps.style()
                 .position_type(PositionType::Absolute)
@@ -70,17 +61,17 @@ fn update_fps(
         // Target frame rate for 60 Hz monitors is actually slightly less than 60,
         // so we round down slightly to avoid flickering under happy circumstances.
         let text_color = if smoothed_fps > 59.5 {
-            Color::GREEN
+            palettes::css::GREEN
         } else if smoothed_fps > 30.0 {
-            Color::YELLOW
+            palettes::css::YELLOW
         } else {
-            Color::RED
+            palettes::css::RED
         };
 
         let text_style = TextStyle {
             font: asset_server.load("FiraSans-Bold.ttf"),
             font_size: 60.0,
-            color: text_color,
+            color: Color::Srgba(text_color),
         };
 
         commands
